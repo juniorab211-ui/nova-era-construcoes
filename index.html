@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NOVA ERA CONSTRUÇÕES LIMITADAS</title>
+<style>
+:root{--green:#16834a;--purple:#673ab7;--ink:#18221d;--muted:#66736b;--bg:#f5f7f5}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,var(--green),var(--purple));color:white;padding:28px 18px}
+.wrap{max-width:1050px;margin:auto;padding:0 16px}
+.brand{font-weight:900;letter-spacing:.3px;font-size:clamp(22px,5vw,34px)}header p{margin:8px 0 0;opacity:.95}
+nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button,.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+nav button{background:#ffffff20;color:white;border:1px solid #ffffff66}
+main{padding:26px 0}.intro{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}
+h1{font-size:25px;margin:0 0 5px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.card{background:white;border:1px solid #e4eae5;border-radius:16px;overflow:hidden;box-shadow:0 5px 18px #152b1a0a}
+.photo{height:180px;background:#e9eee9;display:flex;align-items:center;justify-content:center;color:#738078;font-size:14px}
+.photo img{width:100%;height:100%;object-fit:cover}.details{padding:15px}.details h3{margin:0 0 8px;font-size:17px}.price{font-size:20px;color:var(--green);font-weight:900;margin:8px 0 13px}
+.whatsapp{background:#16834a;color:white}.purple{background:var(--purple);color:white}.light{background:#edf1ed;color:#26352b}
+section.panel{margin-top:30px;background:white;border:1px solid #e4eae5;border-radius:16px;padding:18px}
+input,textarea{width:100%;padding:11px;border:1px solid #ccd6ce;border-radius:9px;margin:5px 0 12px;font:inherit}
+label{font-size:13px;font-weight:700}form{max-width:650px}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hidden{display:none!important}.admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.small{font-size:12px}.empty{text-align:center;padding:35px;color:var(--muted)}
+footer{padding:25px 16px;text-align:center;color:var(--muted);font-size:13px}
+.notice{background:#fff6dc;border:1px solid #f0dfaa;border-radius:10px;padding:12px;margin:14px 0;font-size:13px}
+@media(max-width:560px){.row{grid-template-columns:1fr}.photo{height:160px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="brand">NOVA ERA CONSTRUÇÕES LIMITADAS</div>
+<p>Qualidade e confiança para construir o futuro.</p>
+<nav><button onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Produtos</button><button onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Contactos</button><button onclick="showAdmin()">Área de administração</button></nav>
+</div></header>
+<main class="wrap">
+<div class="intro"><div><h1>Materiais de construção</h1><div class="muted">Consulte os produtos e faça a sua encomenda diretamente pelo WhatsApp.</div></div><a class="btn whatsapp" href="https://wa.me/2399022036" target="_blank" rel="noopener">Falar no WhatsApp</a></div>
+<div id="catalogo" class="grid"></div>
+<section id="contacto" class="panel"><h2>Contactos e localização</h2><p><b>WhatsApp:</b> +239 9022036</p><p><b>Morada:</b> Rua Patrício Lumumba, São Tomé</p><p class="muted">Entregas ao domicílio e levantamento na loja. Confirme disponibilidade e condições pelo WhatsApp.</p></section>
+<section id="admin" class="panel hidden">
+<div class="admin-head"><div><h2>Área de administração</h2><div class="muted small">Adicione, altere ou remova produtos.</div></div><button class="light" onclick="hideAdmin()">Fechar</button></div>
+<div id="login"><p>Introduza a palavra-passe de administração.</p><form onsubmit="login(event)"><label>Palavra-passe</label><input id="pass" type="password" required autocomplete="current-password"><button class="purple">Entrar</button></form><p class="small muted">Palavra-passe inicial: <b>NovaEra2026!</b> Altere-a no código antes de publicar.</p></div>
+<div id="adminContent" class="hidden">
+<div class="notice">Esta versão de demonstração guarda os dados apenas neste navegador. Para gestão segura e sincronizada entre vários dispositivos, é necessário ligar uma base de dados e armazenamento de imagens antes da publicação.</div>
+<h3 id="formTitle">Adicionar produto</h3>
+<form onsubmit="saveProduct(event)">
+<input id="pid" type="hidden">
+<label>Nome do produto</label><input id="name" required>
+<div class="row"><div><label>Preço (STN)</label><input id="price" type="number" min="0" step="1" required></div><div><label>Imagem do produto</label><input id="photo" type="file" accept="image/*"></div></div>
+<label>Descrição (opcional)</label><textarea id="description" rows="2"></textarea>
+<button class="purple">Guardar produto</button> <button type="button" class="light" onclick="resetForm()">Limpar</button>
+</form><h3>Produtos cadastrados</h3><div id="adminList"></div>
+</div></section>
+</main><footer>© <span id="year"></span> NOVA ERA CONSTRUÇÕES LIMITADAS · São Tomé e Príncipe</footer>
+<script>
+const INITIAL=[
+{id:"1",name:"Máquina de cortar mármore WISEUP 1380 W, 115 mm",price:3500,description:"",image:""},
+{id:"2",name:"Rebarbadora WISEUP 21 V, 115 mm",price:950,description:"",image:""},
+{id:"3",name:"Plaina elétrica WISEUP 580 W",price:3500,description:"",image:""},
+{id:"4",name:"Berbequim elétrico WISEUP 1100 W, 13 mm",price:1050,description:"",image:""},
+{id:"5",name:"Colher de pedreiro WISEUP, 8 polegadas",price:85,description:"",image:""}
+];
+const ADMIN_PASSWORD="NovaEra2026!";
+const KEY="novaEraProductsV1";
+let products=JSON.parse(localStorage.getItem(KEY)||"null")||INITIAL;
+function persist(){localStorage.setItem(KEY,JSON.stringify(products));render();renderAdmin()}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(n){return Number(n).toLocaleString("pt-PT")+" STN"}
+function render(){const el=document.getElementById("catalogo");el.innerHTML=products.length?products.map(p=>`<article class="card"><div class="photo">${p.image?`<img src="${p.image}" alt="${esc(p.name)}">`:"Fotografia a adicionar"}</div><div class="details"><h3>${esc(p.name)}</h3>${p.description?`<div class="muted">${esc(p.description)}</div>`:""}<div class="price">${money(p.price)}</div><a class="btn whatsapp" target="_blank" rel="noopener" href="https://wa.me/2399022036?text=${encodeURIComponent("Olá! Gostaria de encomendar: "+p.name+" — "+money(p.price))}">Encomendar pelo WhatsApp</a></div></article>`).join(""):'<div class="empty">Ainda não há produtos cadastrados.</div>'}
+function showAdmin(){document.getElementById("admin").classList.remove("hidden");document.getElementById("admin").scrollIntoView({behavior:"smooth"})}
+function hideAdmin(){document.getElementById("admin").classList.add("hidden")}
+function login(e){e.preventDefault();if(document.getElementById("pass").value!==ADMIN_PASSWORD){alert("Palavra-passe incorreta.");return}document.getElementById("login").classList.add("hidden");document.getElementById("adminContent").classList.remove("hidden");renderAdmin()}
+function renderAdmin(){const el=document.getElementById("adminList");if(!el)return;el.innerHTML=products.map(p=>`<div style="border-top:1px solid #e4eae5;padding:12px 0;display:flex;justify-content:space-between;gap:10px;align-items:center"><div><b>${esc(p.name)}</b><div class="muted small">${money(p.price)}</div></div><div style="display:flex;gap:6px"><button class="light" onclick="editProduct('${p.id}')">Editar</button><button class="light" onclick="deleteProduct('${p.id}')">Apagar</button></div></div>`).join("")||"Sem produtos."}
+function resetForm(){document.getElementById("productForm")?.reset();["pid","name","price","description"].forEach(id=>document.getElementById(id).value="");document.getElementById("formTitle").textContent="Adicionar produto"}
+function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;document.getElementById("pid").value=p.id;document.getElementById("name").value=p.name;document.getElementById("price").value=p.price;document.getElementById("description").value=p.description||"";document.getElementById("formTitle").textContent="Editar produto";document.getElementById("formTitle").scrollIntoView({behavior:"smooth"})}
+function deleteProduct(id){if(confirm("Apagar este produto?")){products=products.filter(p=>p.id!==id);persist()}}
+function saveProduct(e){e.preventDefault();const id=document.getElementById("pid").value||String(Date.now());const old=products.find(p=>p.id===id);const file=document.getElementById("photo").files[0];const finish=image=>{const p={id,name:document.getElementById("name").value.trim(),price:Number(document.getElementById("price").value),description:document.getElementById("description").value.trim(),image:image??old?.image??""};if(old)products=products.map(x=>x.id===id?p:x);else products.push(p);persist();e.target.reset();document.getElementById("pid").value="";document.getElementById("formTitle").textContent="Adicionar produto";alert("Produto guardado neste navegador.")};if(file){const r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish(old?.image||"")}
+document.getElementById("year").textContent=new Date().getFullYear();render();
+</script></body></html>
